@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Main Page{% endblock %}
+
+{% block body %}
+
+<div class="container">
+
+    <div class="mt-2">
+        <a class="btn btn-primary" href="/add">Nowy wydatek</a>
+    </div>
+
+    <div>Wpływ: 5000 zł</div>
+    <table class="table">
+        <thead>
+            <tr class="d-flex">
+                <th class="col-3">Nazwa</th>
+                <th class="col-1">Plan</th>
+                <th class="col-8">Rzeczywiste</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cost in costArr %}
+                <tr class="d-flex">
+                    <td class="col-3">{{ cost.name }}</td>
+                    <td class="col-1">1600 zł</td>
+                    <td class="col-8">
+                        <div class="progress">
+                            <div class="progress-bar" style="width: 50%;">
+                                {{ cost.sum }} zł
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
