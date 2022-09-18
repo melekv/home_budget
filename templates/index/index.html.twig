@@ -5,36 +5,28 @@
 {% block body %}
 
 <div class="container">
-
-    <div class="mt-2">
-        <a class="btn btn-primary" href="/add">Nowy wydatek</a>
+    <div class="grid">
+        {% for period in periods %}
+            <div class="grid-item">
+                <a href="period/{{ period.id }}" class="link-reset">
+                    <div>{{ period.name }}</div>
+                </a>
+                <div class="small-text">
+                    <a href="period/{{ period.id }}/edit">
+                        edytuj
+                    </a> |
+                    <a href="period/{{ period.id }}/delete" class="text-warning">
+                        usuń
+                    </a>
+                </div>
+                
+            </div>
+        {% endfor %}
     </div>
 
-    <div>Wpływ: 5000 zł</div>
-    <table class="table">
-        <thead>
-            <tr class="d-flex">
-                <th class="col-3">Nazwa</th>
-                <th class="col-1">Plan</th>
-                <th class="col-8">Rzeczywiste</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for cost in costArr %}
-                <tr class="d-flex">
-                    <td class="col-3">{{ cost.name }}</td>
-                    <td class="col-1">1600 zł</td>
-                    <td class="col-8">
-                        <div class="progress">
-                            <div class="progress-bar" style="width: 50%;">
-                                {{ cost.sum }} zł
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="mt-2">
+        <a class="btn btn-primary" href="period/add">Nowy plan</a>
+    </div>
 </div>
 
 {% endblock %}

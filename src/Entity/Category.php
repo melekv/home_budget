@@ -12,28 +12,29 @@ class Category
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(options: [
-        "unsigned" => true
-    ])]
-    private int $id;
+    #[ORM\Column]
+    private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private string $name;
+    private ?string $name = null;
+
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: MonthlyPlan::class)]
+    private Collection $monthlyPlansCategory;
 
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Expense::class)]
     private Collection $expenses;
 
     public function __construct()
     {
-        $this->expenses = new ArrayCollection();
+        $this->monthlyPlansCategory = new ArrayCollection();
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -46,42 +47,32 @@ class Category
     }
 
     /**
-     * @return Collection<int, Expense>
+     * @return Collection<int, MonthlyPlan>
      */
-    public function getExpenses(): Collection
+    public function getMonthlyPlansCategory(): Collection
     {
-        return $this->expenses;
+        return $this->monthlyPlansCategory;
     }
 
-    public function addExpense(Expense $expense): self
+    public function addMonthlyPlansCategory(MonthlyPlan $monthlyPlansCategory): self
     {
-        if (!$this->expenses->contains($expense)) {
-            $this->expenses->add($expense);
-            $expense->setCategory($this);
+        if (!$this->monthlyPlansCategory->contains($monthlyPlansCategory)) {
+            $this->monthlyPlansCategory->add($monthlyPlansCategory);
+            $monthlyPlansCategory->setCategory($this);
         }
 
         return $this;
     }
 
-    public function removeExpense(Expense $expense): self
+    public function removeMonthlyPlansCategory(MonthlyPlan $monthlyPlansCategory): self
     {
-        if ($this->expenses->removeElement($expense)) {
+        if ($this->monthlyPlansCategory->removeElement($monthlyPlansCategory)) {
             // set the owning side to null (unless already changed)
-            if ($expense->getCategory() === $this) {
-                $expense->setCategory(null);
+            if ($monthlyPlansCategory->getCategory() === $this) {
+                $monthlyPlansCategory->setCategory(null);
             }
         }
 
         return $this;
-    }
-
-    public function sumUpExpense(): float
-    {
-        $sum = 0;
-        foreach ($this->expenses as $expense) {
-            $sum += $expense->getCost();
-        }
-
-        return $sum;
     }
 }

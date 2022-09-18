@@ -3,11 +3,19 @@
 namespace App\Entity;
 
 use App\Repository\ExpenseRepository;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\ORM\Mapping\JoinColumn;
 
 #[ORM\Entity(repositoryClass: ExpenseRepository::class)]
+#[ORM\AssociationOverrides([
+    new ORM\AssociationOverride(
+        name: 'monthlyPlan',
+        joinColumns: [
+            new ORM\JoinColumn(name: 'period_id', referencedColumnName: 'period_id'),
+            new ORM\JoinColumn(name: 'category_id', referencedColumnName: 'category_id')
+        ]
+    )
+])]
 class Expense
 {
     #[ORM\Id]
@@ -15,31 +23,33 @@ class Expense
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    #[Assert\NotBlank]
-    private ?float $cost = null;
+    #[ORM\ManyToOne(inversedBy: 'expenses')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Period $period = null;
 
     #[ORM\ManyToOne(inversedBy: 'expenses')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Category $category = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Assert\NotBlank]
-    private ?\DateTimeInterface $date = null;
+    #[ORM\Column]
+    private ?int $amount = null;
+
+    #[ORM\ManyToOne(inversedBy: 'expenses')]
+    private ?MonthlyPlan $monthlyPlan = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getCost(): ?float
+    public function getPeriod(): ?Period
     {
-        return $this->cost;
+        return $this->period;
     }
 
-    public function setCost(float $cost): self
+    public function setPeriod(?Period $period): self
     {
-        $this->cost = $cost;
+        $this->period = $period;
 
         return $this;
     }
@@ -49,21 +59,21 @@ class Expense
         return $this->category;
     }
 
-    public function setCategory(?Category $category): self
+    public function setCategory(Category $category): self
     {
         $this->category = $category;
 
         return $this;
     }
 
-    public function getDate(): ?\DateTimeInterface
+    public function getAmount(): ?int
     {
-        return $this->date;
+        return $this->amount;
     }
 
-    public function setDate(\DateTimeInterface $date): self
+    public function setAmount(int $amount): self
     {
-        $this->date = $date;
+        $this->amount = $amount;
 
         return $this;
     }
