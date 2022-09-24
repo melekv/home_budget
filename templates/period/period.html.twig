@@ -6,6 +6,10 @@
 
 <div class="container">
 
+    <div>
+        <a href="/"><<< Wróć</a>
+    </div>
+
     <div class="highlight">{{ period.name }}</div>
 
     <div>Wpływ: {{ period.income }} zł</div>
@@ -38,7 +42,7 @@
     </table>
 
     <div class="mt-2">
-        <a class="btn btn-primary" href="period/{{ period.id }}/add">Nowy wydatek</a>
+        <a class="btn btn-primary" href="/period/{{ period.id }}/expense/add">Nowy wydatek</a>
     </div>
 </div>
 

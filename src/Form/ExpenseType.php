@@ -2,41 +2,34 @@
 
 namespace App\Form;
 
-// use App\Entity\Expense;
-// use App\Entity\Category;
-// use App\Entity\MonthlyBudget;
+use App\Entity\Expense;
+use App\Entity\Category;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class AddExpenseType extends AbstractType
+class ExpenseType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('cost', MoneyType::class, [
+            ->add('amount', MoneyType::class, [
                 'label' => 'Koszt',
                 'currency' => '',
                 'attr' => [
                     'class' => 'form-control'
                 ]
             ])
-            ->add('date', EntityType::class, [
-                'class' => MonthlyBudget::class,
-                'choice_label' => 'period',
+            ->add('category', EntityType::class, [
+                'label' => 'Kategoria',
+                'class' => Category::class,
+                'choice_label' => 'name',
                 'attr' => [
                     'class' => 'form-control'
                 ]
             ])
-            // ->add('category', EntityType::class, [
-            //     'class' => Category::class,
-            //     'choice_label' => 'name',
-            //     'attr' => [
-            //         'class' => 'form-control'
-            //     ]
-            // ])
         ;
     }
 

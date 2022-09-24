@@ -4,18 +4,17 @@ namespace App\Entity;
 
 use App\Repository\ExpenseRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\JoinColumn;
 
 #[ORM\Entity(repositoryClass: ExpenseRepository::class)]
-#[ORM\AssociationOverrides([
-    new ORM\AssociationOverride(
-        name: 'monthlyPlan',
-        joinColumns: [
-            new ORM\JoinColumn(name: 'period_id', referencedColumnName: 'period_id'),
-            new ORM\JoinColumn(name: 'category_id', referencedColumnName: 'category_id')
-        ]
-    )
-])]
+// #[ORM\AssociationOverrides([
+//     new ORM\AssociationOverride(
+//         name: 'monthlyPlan',
+//         joinColumns: [
+//             new ORM\JoinColumn(name: 'period_id', referencedColumnName: 'period'),
+//             new ORM\JoinColumn(name: 'category_id', referencedColumnName: 'category')
+//         ]
+//     )
+// ])]
 class Expense
 {
     #[ORM\Id]
@@ -35,6 +34,7 @@ class Expense
     private ?int $amount = null;
 
     #[ORM\ManyToOne(inversedBy: 'expenses')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?MonthlyPlan $monthlyPlan = null;
 
     public function getId(): ?int
@@ -62,6 +62,18 @@ class Expense
     public function setCategory(Category $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function getMonthlyPlan(): ?MonthlyPlan
+    {
+        return $this->monthlyPlan;
+    }
+
+    public function setMonthlyPlan(?MonthlyPlan $monthlyPlan): self
+    {
+        $this->monthlyPlan = $monthlyPlan;
 
         return $this;
     }

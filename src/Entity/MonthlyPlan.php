@@ -11,11 +11,14 @@ use Doctrine\ORM\Mapping as ORM;
 class MonthlyPlan
 {
     #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
+    
     #[ORM\ManyToOne(inversedBy: 'monthlyPlansPeriod')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Period $period = null;
 
-    #[ORM\Id]
     #[ORM\ManyToOne(inversedBy: 'monthlyPlansCategory')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Category $category = null;
@@ -29,6 +32,11 @@ class MonthlyPlan
     public function __construct()
     {
         $this->expenses = new ArrayCollection();
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
     }
 
     public function getPeriod(): ?Period
@@ -63,6 +71,36 @@ class MonthlyPlan
     public function setAmount(int $amount): self
     {
         $this->amount = $amount;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Expense>
+     */
+    public function getExpenses(): Collection
+    {
+        return $this->expenses;
+    }
+
+    public function addExpense(Expense $expense): self
+    {
+        if (!$this->expenses->contains($expense)) {
+            $this->expenses->add($expense);
+            $expense->setMonthlyPlan($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExpense(Expense $expense): self
+    {
+        if ($this->expenses->removeElement($expense)) {
+            // set the owning side to null (unless already changed)
+            if ($expense->getMonthlyPlan() === $this) {
+                $expense->setMonthlyPlan(null);
+            }
+        }
 
         return $this;
     }
