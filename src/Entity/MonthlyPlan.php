@@ -10,15 +10,17 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: MonthlyPlanRepository::class)]
 class MonthlyPlan
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    // #[ORM\Id]
+    // #[ORM\GeneratedValue]
+    // #[ORM\Column]
+    // private ?int $id = null;
     
+    #[ORM\Id]
     #[ORM\ManyToOne(inversedBy: 'monthlyPlansPeriod')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Period $period = null;
 
+    #[ORM\Id]
     #[ORM\ManyToOne(inversedBy: 'monthlyPlansCategory')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Category $category = null;
@@ -34,10 +36,10 @@ class MonthlyPlan
         $this->expenses = new ArrayCollection();
     }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+    // public function getId(): ?int
+    // {
+    //     return $this->id;
+    // }
 
     public function getPeriod(): ?Period
     {

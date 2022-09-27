@@ -6,15 +6,15 @@ use App\Repository\ExpenseRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ExpenseRepository::class)]
-// #[ORM\AssociationOverrides([
-//     new ORM\AssociationOverride(
-//         name: 'monthlyPlan',
-//         joinColumns: [
-//             new ORM\JoinColumn(name: 'period_id', referencedColumnName: 'period'),
-//             new ORM\JoinColumn(name: 'category_id', referencedColumnName: 'category')
-//         ]
-//     )
-// ])]
+#[ORM\AssociationOverrides([
+    new ORM\AssociationOverride(
+        name: 'monthlyPlan',
+        joinColumns: [
+            new ORM\JoinColumn(name: 'period_id', referencedColumnName: 'period_id'),
+            new ORM\JoinColumn(name: 'category_id', referencedColumnName: 'category_id')
+        ]
+    )
+])]
 class Expense
 {
     #[ORM\Id]
@@ -34,7 +34,7 @@ class Expense
     private ?int $amount = null;
 
     #[ORM\ManyToOne(inversedBy: 'expenses')]
-    #[ORM\JoinColumn(nullable: false)]
+    // #[ORM\JoinColumn(nullable: false)]
     private ?MonthlyPlan $monthlyPlan = null;
 
     public function getId(): ?int
