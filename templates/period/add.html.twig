@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Add period{% endblock %}
+
+{% block body %}
+
+<div class="container mt-2">
+
+    <div>
+        <a href="/"><<< Wróć</a>
+    </div>
+
+    <h2>Dodaj okres i wpływ</h2>
+    
+    {{ form_start(form) }}
+
+        <div class="form-group mt-3">
+            {{ form_label(form.name) }}
+            {{ form_widget(form.name) }}
+            {{ form_errors(form.name) }}
+        </div>
+
+        <div class="form-group mt-3">
+            {{ form_label(form.income) }}
+            {{ form_widget(form.income) }}
+            {{ form_errors(form.income) }}
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-2">Zapisz</button>
+
+    {{ form_end(form) }}
+
+</div>
+
+{% endblock %}

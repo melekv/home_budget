@@ -1,0 +1,44 @@
+@import "~bootstrap/scss/bootstrap";
+//@import "node_modules/bootstrap/scss/bootstrap";
+
+nav {
+    background-color: orange;
+    padding: 20px;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: auto;
+
+    .grid-item {
+        padding: 30px 50px;
+        margin: 10px;
+        border: 3px solid #a0a0a0;
+        border-radius: 10px;
+        text-align: center;
+
+        .small-text {
+            font-size: 0.8rem;
+            color: #505050;
+        }
+
+        .text-warning {
+            color: red;
+        }
+    }
+
+    .link-reset {
+        color: #000000;
+        text-decoration: none;
+    }
+}
+
+.highlight {
+    padding: 20px 0;
+    text-align: center;
+    font-size: 1.3rem;
+    font-weight: bold;
+}

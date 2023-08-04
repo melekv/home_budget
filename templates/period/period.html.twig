@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Main Page{% endblock %}
+
+{% block body %}
+
+<div class="container">
+
+    <div>
+        <a href="/"><<< Wróć</a>
+    </div>
+
+    <div class="highlight">{{ period.name }}</div>
+
+    <div>Wpływ: {{ period.income }} zł</div>
+    <table class="table">
+        <thead>
+            <tr class="d-flex">
+                <th class="col-3">Nazwa</th>
+                <th class="col-1">Plan</th>
+                <th class="col-8">Rzeczywiste</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in budget %}
+                <tr class="d-flex">
+                    <td class="col-3">{{ item.category.name }}</td>
+                    <td class="col-1">{{ item.amount }} zł</td>
+                    <td class="col-8">
+                        <div class="progress">
+                            <div
+                                class="progress-bar"
+                                style="width: {{ item.percent }}%; background-color: {{ item.backgroundColor }};"
+                            >
+                                {{ item.sumUpExpenses }} zł
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="mt-2">
+        <a class="btn btn-primary" href="/period/{{ period.id }}/expense/add">Nowy wydatek</a>
+    </div>
+</div>
+
+{% endblock %}
