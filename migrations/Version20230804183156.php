@@ -21,7 +21,7 @@ final class Version20230804183156 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('DROP SEQUENCE period_id_seq1 CASCADE');
-        $this->addSql('CREATE TABLE expense (id SERIAL NOT NULL, category_id INT NOT NULL, value MONEY NOT NULL, date DATE NOT NULL, type VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE expense (id SERIAL NOT NULL, category_id INT NOT NULL, amount MONEY NOT NULL, date DATE NOT NULL, type VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('ALTER TABLE expense ADD CONSTRAINT FK_2D3A8DA612469DE2 FOREIGN KEY (category_id) REFERENCES category (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE category ALTER id DROP DEFAULT');
         $this->addSql('ALTER TABLE period ALTER id DROP DEFAULT');

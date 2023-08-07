@@ -3,11 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Expense;
-use App\Entity\MonthlyPlan;
-use App\Entity\Period;
+use App\Entity\ExpenseType as Type;
 use App\Form\ExpenseType;
-use App\Repository\ExpenseRepository;
-use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,18 +13,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ExpenseController extends AbstractController
 {
-    #[Route('period/{periodId}/expense/add', name: 'expense_add')]
-    public function create(
-        int $periodId,
-        Request $request,
-        ManagerRegistry $doctrine,
-        ExpenseRepository $er
-        ): Response
+    #[Route('/expense/add', name: 'expense_add')]
+    public function create(Request $request, EntityManagerInterface $entityManager): Response
     {
         $expense = new Expense();
-        
-        $period = $doctrine->getRepository(Period::class)->find($periodId);
-        $expense->setPeriod($period);
+        $expense->setDate(new \DateTime('now'));
+        $expense->setType(Type::Outcome);
 
         $form = $this->createForm(ExpenseType::class, $expense);
 
@@ -34,32 +26,13 @@ class ExpenseController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $expense = $form->getData();
 
-            $monthlyPlan = $doctrine->getRepository(MonthlyPlan::class)->findOneBy([
-                'period' => $expense->getPeriod(),
-                'category' => $expense->getCategory()
-            ]);
-            
-            if (!$monthlyPlan) {
-                $this->addFlash(
-                    'notice',
-                    'Brakuje kategorii: ' .$expense->getCategory()->getName() . '!'
-                );
+            $entityManager->persist($expense);
+            $entityManager->flush();
 
-                return $this->redirectToRoute('expense_add', [
-                    'periodId' => $periodId
-                ]);
-            }
-
-            $expense->setMonthlyPlan($monthlyPlan);
-
-            $er->add($expense, true);
-
-            return $this->redirectToRoute('period', [
-                'id' => $periodId
-            ]);
+            return $this->redirectToRoute('app_index');
         }
 
-        return $this->renderForm('expense/add.html.twig', [
+        return $this->render('expense/add.html.twig', [
             'form' => $form
         ]);
     }

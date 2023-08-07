@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dodaj wydatek{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Dodaj wydatek</h1>
+        {{ form_start(form) }}
+            <div>
+                {{ form_label(form.amount) }}
+                {{ form_widget(form.amount) }}
+                {{ form_errors(form.amount) }}
+            </div>
+            <div>
+                {{ form_label(form.category) }}
+                {{ form_widget(form.category) }}
+                {{ form_errors(form.category) }}
+            </div>
+            <div>
+                {{ form_label(form.date) }}
+                {{ form_widget(form.date) }}
+                {{ form_errors(form.date) }}
+            </div>
+            <div>
+                {{ form_label(form.type) }}
+                {{ form_widget(form.type) }}
+                {{ form_errors(form.type) }}
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-2">Zapisz</button>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

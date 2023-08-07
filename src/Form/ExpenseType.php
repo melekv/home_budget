@@ -6,6 +6,8 @@ use App\Entity\Category;
 use App\Entity\Expense;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -29,6 +31,12 @@ class ExpenseType extends AbstractType
                 'attr' => [
                     'class' => 'form-control'
                 ]
+            ])
+            ->add('date', DateType::class, [
+                'format' => 'yyyy-MM-dd'
+            ])
+            ->add('type', EnumType::class, [
+                'class' => \App\Entity\ExpenseType::class
             ])
         ;
     }

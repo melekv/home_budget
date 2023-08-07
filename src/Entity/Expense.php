@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ExpenseRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ExpenseRepository::class)]
 class Expense
@@ -15,7 +16,8 @@ class Expense
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?float $value = null;
+    #[Assert\Assert\Positive(message: 'expense.amount.positive')]
+    private ?float $amount = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
@@ -32,14 +34,14 @@ class Expense
         return $this->id;
     }
 
-    public function getValue(): ?float
+    public function getAmount(): ?float
     {
-        return $this->value;
+        return $this->amount;
     }
 
-    public function setValue(float $value): static
+    public function setAmount(float $amount): static
     {
-        $this->value = $value;
+        $this->amount = $amount;
 
         return $this;
     }
